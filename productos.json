@@ -1,0 +1,72 @@
+[
+  {
+    "id": "p1",
+    "name": "Camiseta de niña lazitos",
+    "price": 6,
+    "category": "Ropa",
+    "gender": "Niños",
+    "size": "Única",
+    "available": true,
+    "images": ["images/camiseta-ninas-lazitos-1.jpg"]
+  },
+  {
+    "id": "p2",
+    "name": "Camiseta de niña estampada",
+    "price": 13,
+    "category": "Ropa",
+    "gender": "Niños",
+    "size": "Única",
+    "available": true,
+    "images": ["images/camiseta-ninas-estampada-1.jpg"]
+  },
+  {
+    "id": "p3",
+    "name": "Body de dama",
+    "price": 15,
+    "category": "Ropa",
+    "gender": "Damas",
+    "size": "Única",
+    "available": true,
+    "images": ["images/body-dama-1.jpg"]
+  },
+  {
+    "id": "p4",
+    "name": "Top de dama",
+    "price": 15,
+    "category": "Ropa",
+    "gender": "Damas",
+    "size": "Única",
+    "available": true,
+    "images": ["images/top-dama-1.jpg"]
+  },
+  {
+    "id": "p5",
+    "name": "Body de dama manga larga",
+    "price": 10,
+    "category": "Ropa",
+    "gender": "Damas",
+    "size": "Única",
+    "available": true,
+    "images": ["images/body-dama-manga-larga-1.jpg"]
+  },
+  {
+    "id": "p6",
+    "name": "Blusa oversize",
+    "price": 7,
+    "category": "Ropa",
+    "gender": "Damas",
+    "size": "Única",
+    "available": true,
+    "images": ["images/blusa-oversize-1.jpg"]
+  },
+  {
+    "id": "p7",
+    "name": "Jersey de dama",
+    "price": 7,
+    "category": "Ropa",
+    "gender": "Damas",
+    "size": "Única",
+    "available": true,
+    "images": ["images/jersey-dama-1.jpg"]
+  }
+]

@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marianela Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a09;
+    --panel:#161310;
+    --panel-2:#1e1b16;
+    --line: rgba(212,178,109,0.18);
+    --gold:#c19a49;
+    --gold-bright:#e8c877;
+    --ivory:#f3ede1;
+    --muted:#9a9184;
+    --moss:#3c4a35;
+    --moss-bright:#6b8259;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--ivory);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--gold-bright); outline-offset:3px;}
+  code{ background:var(--panel-2); padding:2px 6px; border-radius:4px; font-size:.9em; }
+
+  /* ---------- texture ---------- */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.05; mix-blend-mode:overlay;
+    background-image:radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
+    background-size: 3px 3px;
+  }
+
+  /* ---------- header / nav ---------- */
+  .site-header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(10,10,9,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+  }
+  .brand-mark{
+    width:38px; height:38px; border-radius:999px;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    background:transparent; cursor:pointer; flex-shrink:0; padding:0; text-decoration:none;
+    transition:border-color .2s, background .2s;
+  }
+  .brand-mark:hover{ background:rgba(193,154,73,0.08); border-color:var(--gold-bright); }
+  .brand-m{
+    font-family:'Mrs Saint Delafield', cursive;
+    font-size:22px; color:var(--gold-bright); line-height:1;
+    transform:translateY(-1px);
+  }
+  .topbar nav{display:flex; gap:22px; align-items:center;}
+  .topbar nav a{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+    text-decoration:none; transition:color .2s;
+  }
+  .topbar nav a:hover{color:var(--gold-bright);}
+  .ig-pill{
+    display:flex; align-items:center; gap:7px;
+    border:1px solid var(--line); padding:7px 12px; border-radius:999px;
+    font-size:12px; color:var(--ivory); text-decoration:none;
+    transition:border-color .2s, color .2s;
+  }
+  .ig-pill:hover{border-color:var(--gold); color:var(--gold-bright);}
+  .ig-pill svg{width:14px; height:14px;}
+
+  .filter-row{
+    border-top:1px solid var(--line);
+    padding:12px 24px;
+    display:flex; align-items:center; gap:16px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .filter-row::-webkit-scrollbar{ display:none; }
+  .filter-group{ display:flex; gap:8px; flex-shrink:0; padding-right:16px; border-right:1px solid var(--line); }
+  .filter-select-wrap{ position:relative; flex-shrink:0; }
+  .filter-select{
+    appearance:none; -webkit-appearance:none; -moz-appearance:none;
+    background:var(--ink); border:1px solid var(--line); color:var(--ivory);
+    padding:8px 30px 8px 14px; border-radius:999px; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    cursor:pointer; font-family:inherit; white-space:nowrap;
+  }
+  .filter-select:hover, .filter-select:focus{ border-color:var(--gold); }
+  .filter-select-wrap::after{
+    content:"";
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:5px solid var(--muted);
+    pointer-events:none;
+  }
+
+  /* ---------- hero banner ---------- */
+  .hero-band{
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-band::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 100% at 12% 15%, rgba(193,154,73,0.12), transparent 60%),
+      radial-gradient(ellipse 60% 100% at 88% 100%, rgba(60,74,53,0.20), transparent 60%);
+    pointer-events:none;
+  }
+  .koi-decor{ position:absolute; pointer-events:none; z-index:1; }
+  .koi-1{ width:480px; height:auto; right:-80px; bottom:-55px; opacity:.6; }
+  .koi-2{ width:270px; height:auto; left:-25px; top:-18px; opacity:.35; transform:scaleX(-1) rotate(10deg); }
+  @media (max-width: 820px){
+    .koi-1{ width:300px; right:-75px; bottom:-45px; }
+    .koi-2{ display:none; }
+  }
+  .hero{
+    position:relative; z-index:2;
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between; gap:48px;
+    padding:52px 24px;
+    text-align:left;
+  }
+  .hero-brand{ flex-shrink:0; }
+  .eyebrow{
+    font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--moss-bright);
+    margin-bottom:14px;
+  }
+  .word-mark{
+    font-family:'Mrs Saint Delafield', cursive;
+    font-size:clamp(46px, 6vw, 84px);
+    line-height:.9;
+    color:var(--gold-bright);
+    text-shadow: 0 0 30px rgba(230,200,119,0.16);
+  }
+  .word-mark-sub{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:clamp(16px, 2vw, 22px);
+    letter-spacing:.55em;
+    margin-left:.55em;
+    color:var(--ivory);
+    margin-top:4px;
+  }
+  .flourish{ width:170px; height:36px; margin-top:16px; display:block; }
+  .flourish path{
+    fill:none; stroke:var(--gold); stroke-width:1.4; stroke-linecap:round;
+    stroke-dasharray:340; stroke-dashoffset:340;
+    animation:draw 1.8s ease-out .3s forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  .hero-info{ max-width:420px; }
+  .hero p.tag{
+    color:var(--muted); font-size:15px; line-height:1.7; margin:0;
+  }
+  .hero-ctas{
+    display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;
+  }
+  @media (max-width: 820px){
+    .hero{ flex-direction:column; text-align:center; padding:42px 22px; gap:26px; }
+    .hero-info{ max-width:100%; }
+    .flourish{ margin-left:auto; margin-right:auto; }
+    .hero-ctas{ justify-content:center; }
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 26px; border-radius:999px; font-size:13px; font-weight:700;
+    letter-spacing:.05em; text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s, border-color .15s, color .15s;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-gold{ background:var(--gold-bright); color:#1a1509; }
+  .btn-gold:hover{ box-shadow:0 8px 24px rgba(230,200,119,0.25); }
+  .btn-ghost{ background:transparent; border-color:var(--line); color:var(--ivory); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-bright); }
+  .btn-moss{ background:var(--moss); color:var(--ivory); }
+  .btn-moss:hover{ background:var(--moss-bright); }
+  .btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
+  /* ---------- catalog ---------- */
+  .section{ padding:80px 20px 40px; max-width:1180px; margin:0 auto; scroll-margin-top:112px; }
+  .section-head{ text-align:center; margin-bottom:36px; }
+  .section-head .eyebrow{ margin-bottom:10px; }
+  .section-head h2{
+    font-family:'Cormorant Garamond', serif; font-weight:600;
+    font-size:clamp(30px, 5vw, 46px); margin:0; color:var(--ivory);
+  }
+  .section-head p{ color:var(--muted); font-size:14px; margin-top:10px; }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:22px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .card:hover{ transform:translateY(-4px); border-color:var(--gold); }
+  .card .img-wrap{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--panel-2); }
+  .card .img-wrap img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:grayscale(.25) sepia(.12) contrast(1.05) brightness(.92);
+    transition:transform .5s ease;
+  }
+  .card:hover .img-wrap img{ transform:scale(1.06); }
+  .card .cat-pill{
+    position:absolute; top:10px; left:10px; z-index:2;
+    background:rgba(10,10,9,0.75); border:1px solid var(--line);
+    padding:4px 10px; border-radius:999px; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-bright);
+  }
+  .card .unavail{
+    position:absolute; inset:0; background:rgba(10,10,9,0.72);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+  }
+  .img-nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+    width:26px; height:26px; border-radius:999px; border:none;
+    background:rgba(10,10,9,0.55); color:var(--ivory); font-size:16px; line-height:1;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    opacity:.7; transition:opacity .2s, background .2s;
+  }
+  .img-nav:hover{ opacity:1; background:rgba(10,10,9,0.8); }
+  .img-nav.prev{ left:8px; }
+  .img-nav.next{ right:8px; }
+  .img-dots{
+    position:absolute; bottom:9px; left:0; right:0; z-index:3;
+    display:flex; gap:5px; justify-content:center;
+  }
+  .img-dots .dot{
+    width:5px; height:5px; border-radius:999px; background:rgba(243,237,225,0.4);
+    transition:background .2s, transform .2s;
+  }
+  .img-dots .dot.active{ background:var(--gold-bright); transform:scale(1.3); }
+  .card .body{ padding:16px 16px 18px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .card h3{ margin:0; font-size:16px; font-weight:700; color:var(--ivory); line-height:1.3; }
+  .card .meta{ display:flex; align-items:center; justify-content:space-between; }
+  .card .price{ font-family:'Cormorant Garamond', serif; font-size:22px; color:var(--gold-bright); font-weight:600; }
+  .card .size{ font-size:11px; color:var(--muted); border:1px solid var(--line); padding:3px 9px; border-radius:999px; }
+  .card .cta{ margin-top:auto; }
+  .card .cta a{ width:100%; justify-content:center; }
+
+  .empty-state{
+    text-align:center; padding:60px 20px; color:var(--muted); border:1px dashed var(--line); border-radius:8px;
+  }
+  .empty-state p{ margin:0; font-size:14px; line-height:1.6; }
+
+  .location-block{
+    display:flex; gap:0; align-items:stretch;
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    max-width:880px; margin:0 auto;
+  }
+  .location-photo{
+    flex:0 0 42%; position:relative; aspect-ratio:4/3; background:var(--panel-2);
+    display:flex; align-items:center; justify-content:center;
+    border-right:1px solid var(--line);
+  }
+  .location-photo img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:grayscale(.25) sepia(.12) contrast(1.05) brightness(.92);
+  }
+  .location-photo .placeholder{
+    display:flex; flex-direction:column; align-items:center; gap:10px; color:var(--muted);
+    font-size:11px; letter-spacing:.06em; text-transform:uppercase; text-align:center; padding:20px;
+  }
+  .location-photo .placeholder svg{ width:30px; height:30px; opacity:.5; }
+  .location-info{
+    flex:1; padding:30px 28px; display:flex; flex-direction:column; justify-content:center; gap:18px;
+  }
+  .location-address{ color:var(--muted); font-size:14px; line-height:1.7; margin:0; }
+  .location-info .btn{ align-self:flex-start; }
+  @media (max-width: 700px){
+    .location-block{ flex-direction:column; }
+    .location-photo{ flex:none; border-right:none; border-bottom:1px solid var(--line); aspect-ratio:16/9; }
+    .location-info{ align-items:center; text-align:center; }
+    .location-info .btn{ align-self:center; }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:60px; padding:34px 20px 90px; text-align:center; border-top:1px solid var(--line);
+  }
+  footer .fword{ font-family:'Mrs Saint Delafield', cursive; font-size:22px; color:var(--gold-bright); }
+  footer .flinks{ display:flex; gap:18px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
+  footer .flinks a{ font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:.05em; }
+  footer .flinks a:hover{ color:var(--gold-bright); }
+  footer .fine{ font-size:11px; color:#5a5348; margin-top:14px; }
+
+  /* ---------- floating whatsapp ---------- */
+  .wa-float{
+    position:fixed; right:18px; bottom:18px; z-index:50;
+    width:54px; height:54px; border-radius:999px; background:var(--moss);
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.08);
+    transition:background .2s, transform .2s;
+  }
+  .wa-float:hover{ background:var(--moss-bright); transform:scale(1.06); }
+  .wa-float svg{ width:26px; height:26px; fill:var(--ivory); }
+
+  @media (max-width: 640px){
+    .topbar nav{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flourish path{ animation:none; stroke-dashoffset:0; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="site-header">
+  <div class="topbar">
+    <a href="#" class="brand-mark" aria-label="Marianela Shop">
+      <span class="brand-m">M</span>
+    </a>
+    <nav>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#ubicacion">Ubicación</a>
+    </nav>
+    <a class="ig-pill" id="igPillTop" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c2.7 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.21.6 1.76 1.15.55.55.9 1.1 1.15 1.76.25.64.42 1.37.47 2.43.05 1.06.06 1.42.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.76 4.9 4.9 0 0 1-1.76 1.15c-.64.25-1.37.42-2.43.47-1.06.05-1.42.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.76-1.15 4.9 4.9 0 0 1-1.15-1.76c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.7 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.21 1.15-1.76A4.9 4.9 0 0 1 5.44 2.54c.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.3 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.4-8.4a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg>
+      <span id="igHandleTop">@marianela_shopp</span>
+    </a>
+  </div>
+  <div class="filter-row">
+    <div class="filter-group" id="genderToggle"></div>
+    <div id="chips"></div>
+  </div>
+</header>
+
+<section class="hero-band">
+  <svg class="koi-decor koi-1" viewBox="0 0 480 260" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="koiFade1" x1="10%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" style="stop-color:var(--gold-bright); stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:var(--gold-bright); stop-opacity:0.06"/>
+    </linearGradient>
+  </defs>
+  <path d="M20,45 C55,25 95,38 88,68" style="fill:none; stroke:var(--gold-bright); stroke-opacity:0.16; stroke-width:1.5;"/>
+  <path d="M8,205 C42,225 88,220 100,190" style="fill:none; stroke:var(--gold-bright); stroke-opacity:0.14; stroke-width:1.5;"/>
+  <g style="stroke:var(--gold-bright); stroke-opacity:0.4; stroke-width:1.3; fill:url(#koiFade1);">
+    <path d="M158,135 C110,110 70,80 30,55 C55,90 60,115 40,130 C15,140 5,165 15,190 C40,185 55,165 70,160 C55,195 45,220 55,250 C85,225 85,195 105,185 C95,215 100,235 125,240 C130,205 120,185 140,175 C158,168 158,150 158,135 Z" style="fill-opacity:0.5;"/>
+    <path d="M335,150 C320,108 282,88 235,90 C195,92 168,102 155,128 C150,140 150,160 155,172 C168,198 195,208 235,210 C282,212 320,192 335,150 Z"/>
+    <path d="M225,92 C232,55 245,20 268,8 C260,40 250,65 260,85 C248,92 235,95 225,92 Z" style="fill-opacity:0.55;"/>
+    <path d="M305,168 C318,195 325,222 305,240 C285,218 282,192 292,162 Z" style="fill-opacity:0.55;"/>
+    <path d="M245,208 C252,228 265,240 280,236 C268,218 258,205 248,200 Z" style="fill-opacity:0.5;"/>
+    <path d="M300,120 C296,135 296,150 300,163" style="fill:none;"/>
+  </g>
+  <circle cx="318" cy="142" r="4" style="fill:var(--gold-bright); opacity:0.45;"/>
+</svg>
+<svg class="koi-decor koi-2" viewBox="0 0 480 260" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="koiFade2" x1="10%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" style="stop-color:var(--gold-bright); stop-opacity:0.35"/>
+      <stop offset="100%" style="stop-color:var(--gold-bright); stop-opacity:0.04"/>
+    </linearGradient>
+  </defs>
+  <g style="stroke:var(--gold-bright); stroke-opacity:0.3; stroke-width:1.3; fill:url(#koiFade2);">
+    <path d="M158,135 C110,110 70,80 30,55 C55,90 60,115 40,130 C15,140 5,165 15,190 C40,185 55,165 70,160 C55,195 45,220 55,250 C85,225 85,195 105,185 C95,215 100,235 125,240 C130,205 120,185 140,175 C158,168 158,150 158,135 Z" style="fill-opacity:0.45;"/>
+    <path d="M335,150 C320,108 282,88 235,90 C195,92 168,102 155,128 C150,140 150,160 155,172 C168,198 195,208 235,210 C282,212 320,192 335,150 Z"/>
+    <path d="M225,92 C232,55 245,20 268,8 C260,40 250,65 260,85 C248,92 235,95 225,92 Z" style="fill-opacity:0.5;"/>
+  </g>
+</svg>
+  <div class="hero">
+    <div class="hero-brand">
+      <div class="eyebrow">Moda Trendy · Caracas, Venezuela</div>
+      <div class="word-mark">Marianela</div>
+      <div class="word-mark-sub">SHOP</div>
+      <svg class="flourish" viewBox="0 0 220 46">
+        <path d="M4 30 C 40 6, 70 44, 110 22 S 180 4, 216 26"/>
+      </svg>
+    </div>
+    <div class="hero-info">
+      <p class="tag">Accesorios y ropa que se adapta a tu ritmo. Calidad 100%. Piezas seleccionadas, en pocas unidades.</p>
+      <div class="hero-ctas">
+        <a href="#catalogo" class="btn btn-gold">Ver catálogo</a>
+        <a href="#contacto" class="btn btn-ghost">Cómo comprar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="catalogo">
+  <div class="section-head">
+    <div class="eyebrow">Catálogo</div>
+    <h2>Lo que hay disponible</h2>
+    <p>Toca "Consultar" para reservar por WhatsApp — stock limitado por pieza.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="section" id="contacto" style="padding-top:20px;">
+  <div class="section-head">
+    <div class="eyebrow">Cómo comprar</div>
+    <h2>Simple, por WhatsApp</h2>
+    <p>Elige la prenda, toca "Consultar", confirmamos disponibilidad, talla y método de pago por chat.</p>
+  </div>
+</section>
+
+<section class="section" id="ubicacion" style="padding-top:20px;">
+  <div class="section-head">
+    <div class="eyebrow">Visítanos</div>
+    <h2>Dónde encontrarnos</h2>
+  </div>
+  <div class="location-block">
+    <div class="location-photo" id="locationPhoto"></div>
+    <div class="location-info">
+      <p class="location-address">Avenida Sucre de Catia, Centro Comercial Antonio José de Sucre.<br>Local 67, segundo pasillo del mercado.</p>
+      <a class="btn btn-gold" href="https://maps.app.goo.gl/PgoCvX7DZP5Pqjy9A" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7.58 7-12A7 7 0 0 0 5 10c0 4.42 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Cómo llegar (Google Maps)
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fword">Marianela Shop</div>
+  <div class="flinks">
+    <a id="igLinkFooter" href="#" target="_blank" rel="noopener">Instagram</a>
+    <a id="waLinkFooter" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="#ubicacion">Ubicación</a>
+  </div>
+  <div class="fine">© <span id="year"></span> Marianela Shop</div>
+</footer>
+
+<a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.4.7 4.63 1.9 6.5L4 29l7.66-1.85a11.94 11.94 0 0 0 4.36.82c6.62 0 12.02-5.4 12.02-12.02C28.04 8.4 22.64 3 16.02 3zm0 21.86c-1.9 0-3.7-.55-5.24-1.5l-.38-.23-4.55 1.1 1.13-4.44-.25-.38a9.86 9.86 0 0 1-1.55-5.4c0-5.47 4.45-9.92 9.86-9.92 5.4 0 9.86 4.45 9.86 9.92 0 5.47-4.45 9.85-9.88 9.85zm5.4-7.4c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.16-.17.2-.34.22-.63.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.5.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.2-.24-.57-.48-.5-.66-.5h-.56c-.2 0-.52.07-.79.37-.27.3-1.03 1-1.03 2.46 0 1.46 1.06 2.86 1.2 3.06.15.2 2.1 3.2 5.08 4.5.7.3 1.26.5 1.68.63.7.22 1.35.19 1.85.11.57-.08 1.75-.71 2-1.4.24-.68.24-1.27.17-1.4-.07-.12-.27-.2-.57-.35z"/></svg>
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  // ============================================================
+  //  CONFIGURACIÓN — edita estos valores cuando los necesites
+  // ============================================================
+  var WHATSAPP_NUMBER = "584242744242";   // Código de país + número, sin "+" ni espacios
+  var INSTAGRAM_USER   = "marianela_shopp"; // Sin la @
+  var STORE_PHOTO       = "images/local-1.jpg"; // Foto del local (déjalo vacío "" para usar el espacio reservado)
+  var CAROUSEL_MS       = 3000; // Cada cuánto cambia de foto el carrusel de cada prenda (en milisegundos)
+  var CATEGORIES        = ["Gorras", "Accesorios", "Lentes", "Ropa", "Otros"];
+  var GENDERS_FILTER    = ["Todos", "Damas", "Caballeros", "Niños"];
+  // ============================================================
+
+  var state = { products: [], activeCategory: "Todo", activeGender: "Todos" };
+  var carouselTimers = [];
+
+  function waLink(number, message){
+    var digits = (number || "").replace(/\D/g, "");
+    return "https://wa.me/" + digits + (message ? ("?text=" + encodeURIComponent(message)) : "");
+  }
+
+  function renderContactLinks(){
+    document.getElementById('igPillTop').href = "https://instagram.com/" + INSTAGRAM_USER;
+    document.getElementById('igHandleTop').textContent = "@" + INSTAGRAM_USER;
+    document.getElementById('igLinkFooter').href = "https://instagram.com/" + INSTAGRAM_USER;
+    var generic = waLink(WHATSAPP_NUMBER, "Hola! Vi el catálogo de Marianela Shop y quisiera más info.");
+    document.getElementById('waLinkFooter').href = generic;
+    document.getElementById('waFloat').href = generic;
+  }
+
+  function renderLocationPhoto(){
+    var wrap = document.getElementById('locationPhoto');
+    if(!STORE_PHOTO){
+      showPlaceholder();
+      return;
+    }
+    var img = document.createElement('img');
+    img.alt = "Fachada de Marianela Shop";
+    img.onerror = showPlaceholder;
+    wrap.innerHTML = "";
+    wrap.appendChild(img);
+    img.src = STORE_PHOTO;
+    function showPlaceholder(){
+      wrap.innerHTML =
+        '<div class="placeholder">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>' +
+          '<span>Foto del local próximamente</span>' +
+        '</div>';
+    }
+  }
+
+  function renderGenderSelect(){
+    var wrap = document.getElementById('genderToggle');
+    wrap.innerHTML = '<div class="filter-select-wrap"><select class="filter-select" id="genderSelect">' +
+      GENDERS_FILTER.map(function(g){ return '<option value="' + g + '" ' + (state.activeGender === g ? 'selected' : '') + '>' + g + '</option>'; }).join('') +
+      '</select></div>';
+    document.getElementById('genderSelect').addEventListener('change', function(e){
+      state.activeGender = e.target.value;
+      renderGrid();
+    });
+  }
+
+  function renderCategorySelect(){
+    var wrap = document.getElementById('chips');
+    var cats = ["Todo"].concat(CATEGORIES.filter(function(c){
+      return state.products.some(function(p){ return p.category === c; });
+    }));
+    wrap.innerHTML = '<div class="filter-select-wrap"><select class="filter-select" id="categorySelect">' +
+      cats.map(function(c){ return '<option value="' + c + '" ' + (state.activeCategory === c ? 'selected' : '') + '>' + c + '</option>'; }).join('') +
+      '</select></div>';
+    document.getElementById('categorySelect').addEventListener('change', function(e){
+      state.activeCategory = e.target.value;
+      renderGrid();
+    });
+  }
+
+  function clearCarousels(){
+    carouselTimers.forEach(function(t){ clearInterval(t); });
+    carouselTimers = [];
+  }
+
+  function renderGrid(){
+    clearCarousels();
+    var grid = document.getElementById('grid');
+    var list = state.products.filter(function(p){
+      var catOk = state.activeCategory === "Todo" || p.category === state.activeCategory;
+      var genOk = state.activeGender === "Todos" || p.gender === state.activeGender || p.gender === "Unisex";
+      return catOk && genOk;
+    });
+    if(list.length === 0){
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>Todavía no hay prendas en esta categoría.</p></div>';
+      return;
+    }
+    grid.innerHTML = "";
+    list.forEach(function(p){
+      var images = (p.images && p.images.length) ? p.images : [];
+      var card = document.createElement('div');
+      card.className = 'card';
+      var priceLabel = "€" + p.price;
+      var msg = "Hola! Me interesa: " + p.name + " (" + priceLabel + ") — Talla " + p.size + ". ¿Está disponible?";
+      var imgsHtml = images.map(function(src, i){
+        return '<img src="' + src + '" alt="' + p.name + '" loading="lazy" class="prod-img" style="display:' + (i === 0 ? 'block' : 'none') + '">';
+      }).join('');
+      var navHtml = images.length > 1
+        ? '<button type="button" class="img-nav prev" aria-label="Foto anterior">&lsaquo;</button>' +
+          '<button type="button" class="img-nav next" aria-label="Foto siguiente">&rsaquo;</button>' +
+          '<div class="img-dots">' + images.map(function(_, i){ return '<span class="dot' + (i === 0 ? ' active' : '') + '"></span>'; }).join('') + '</div>'
+        : '';
+      card.innerHTML =
+        '<div class="img-wrap">' +
+          '<span class="cat-pill">' + p.category + '</span>' +
+          imgsHtml + navHtml +
+          (!p.available ? '<div class="unavail">Agotado</div>' : '') +
+        '</div>' +
+        '<div class="body">' +
+          '<h3>' + p.name + '</h3>' +
+          '<div class="meta"><span class="price">' + priceLabel + '</span><span class="size">Talla ' + p.size + '</span></div>' +
+          '<div class="cta">' +
+            (p.available
+              ? '<a class="btn btn-moss" target="_blank" rel="noopener" href="' + waLink(WHATSAPP_NUMBER, msg) + '">Consultar</a>'
+              : '<button class="btn btn-ghost" disabled>Agotado</button>') +
+          '</div>' +
+        '</div>';
+
+      if(images.length > 1){
+        var idx = 0;
+        var imgEls = card.querySelectorAll('.prod-img');
+        var dotEls = card.querySelectorAll('.dot');
+        var show = function(i){
+          idx = (i + images.length) % images.length;
+          imgEls.forEach(function(im, j){ im.style.display = j === idx ? 'block' : 'none'; });
+          dotEls.forEach(function(d, j){ d.classList.toggle('active', j === idx); });
+        };
+        var timer = setInterval(function(){ show(idx + 1); }, CAROUSEL_MS);
+        carouselTimers.push(timer);
+        function resetTimer(){
+          clearInterval(timer);
+          timer = setInterval(function(){ show(idx + 1); }, CAROUSEL_MS);
+          carouselTimers.push(timer);
+        }
+        card.querySelector('.img-nav.prev').addEventListener('click', function(e){ e.preventDefault(); show(idx - 1); resetTimer(); });
+        card.querySelector('.img-nav.next').addEventListener('click', function(e){ e.preventDefault(); show(idx + 1); resetTimer(); });
+      }
+
+      grid.appendChild(card);
+    });
+  }
+
+  async function init(){
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderGenderSelect();
+    renderContactLinks();
+    renderLocationPhoto();
+
+    var grid = document.getElementById('grid');
+    try{
+      var res = await fetch('./productos.json');
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      state.products = await res.json();
+    }catch(err){
+      console.error('No se pudo cargar productos.json', err);
+      grid.innerHTML =
+        '<div class="empty-state" style="grid-column:1/-1;">' +
+          '<p>No se pudo cargar el catálogo (<code>productos.json</code>). Si estás probando el archivo en tu computadora, ábrelo con un servidor local (por ejemplo <code>python3 -m http.server</code>) en vez de hacer doble clic — al publicarlo en GitHub Pages esto funciona directo.</p>' +
+        '</div>';
+      renderCategorySelect();
+      return;
+    }
+    renderCategorySelect();
+    renderGrid();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
