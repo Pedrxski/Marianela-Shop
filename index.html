@@ -119,10 +119,10 @@
     pointer-events:none;
   }
   .koi-decor{ position:absolute; pointer-events:none; z-index:1; }
-  .koi-1{ width:480px; height:auto; right:-80px; bottom:-55px; opacity:.6; }
-  .koi-2{ width:270px; height:auto; left:-25px; top:-18px; opacity:.35; transform:scaleX(-1) rotate(10deg); }
+  .koi-1{ width:520px; height:auto; right:-60px; bottom:-30px; opacity:.4; }
+  .koi-2{ width:300px; height:auto; left:-40px; top:20px; opacity:.22; transform:scaleX(-1) rotate(-6deg); }
   @media (max-width: 820px){
-    .koi-1{ width:300px; right:-75px; bottom:-45px; }
+    .koi-1{ width:320px; right:-50px; bottom:-15px; }
     .koi-2{ display:none; }
   }
   .hero{
@@ -343,38 +343,8 @@
 </header>
 
 <section class="hero-band">
-  <svg class="koi-decor koi-1" viewBox="0 0 480 260" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="koiFade1" x1="10%" y1="10%" x2="85%" y2="90%">
-      <stop offset="0%" style="stop-color:var(--gold-bright); stop-opacity:0.5"/>
-      <stop offset="100%" style="stop-color:var(--gold-bright); stop-opacity:0.06"/>
-    </linearGradient>
-  </defs>
-  <path d="M20,45 C55,25 95,38 88,68" style="fill:none; stroke:var(--gold-bright); stroke-opacity:0.16; stroke-width:1.5;"/>
-  <path d="M8,205 C42,225 88,220 100,190" style="fill:none; stroke:var(--gold-bright); stroke-opacity:0.14; stroke-width:1.5;"/>
-  <g style="stroke:var(--gold-bright); stroke-opacity:0.4; stroke-width:1.3; fill:url(#koiFade1);">
-    <path d="M158,135 C110,110 70,80 30,55 C55,90 60,115 40,130 C15,140 5,165 15,190 C40,185 55,165 70,160 C55,195 45,220 55,250 C85,225 85,195 105,185 C95,215 100,235 125,240 C130,205 120,185 140,175 C158,168 158,150 158,135 Z" style="fill-opacity:0.5;"/>
-    <path d="M335,150 C320,108 282,88 235,90 C195,92 168,102 155,128 C150,140 150,160 155,172 C168,198 195,208 235,210 C282,212 320,192 335,150 Z"/>
-    <path d="M225,92 C232,55 245,20 268,8 C260,40 250,65 260,85 C248,92 235,95 225,92 Z" style="fill-opacity:0.55;"/>
-    <path d="M305,168 C318,195 325,222 305,240 C285,218 282,192 292,162 Z" style="fill-opacity:0.55;"/>
-    <path d="M245,208 C252,228 265,240 280,236 C268,218 258,205 248,200 Z" style="fill-opacity:0.5;"/>
-    <path d="M300,120 C296,135 296,150 300,163" style="fill:none;"/>
-  </g>
-  <circle cx="318" cy="142" r="4" style="fill:var(--gold-bright); opacity:0.45;"/>
-</svg>
-<svg class="koi-decor koi-2" viewBox="0 0 480 260" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="koiFade2" x1="10%" y1="10%" x2="85%" y2="90%">
-      <stop offset="0%" style="stop-color:var(--gold-bright); stop-opacity:0.35"/>
-      <stop offset="100%" style="stop-color:var(--gold-bright); stop-opacity:0.04"/>
-    </linearGradient>
-  </defs>
-  <g style="stroke:var(--gold-bright); stroke-opacity:0.3; stroke-width:1.3; fill:url(#koiFade2);">
-    <path d="M158,135 C110,110 70,80 30,55 C55,90 60,115 40,130 C15,140 5,165 15,190 C40,185 55,165 70,160 C55,195 45,220 55,250 C85,225 85,195 105,185 C95,215 100,235 125,240 C130,205 120,185 140,175 C158,168 158,150 158,135 Z" style="fill-opacity:0.45;"/>
-    <path d="M335,150 C320,108 282,88 235,90 C195,92 168,102 155,128 C150,140 150,160 155,172 C168,198 195,208 235,210 C282,212 320,192 335,150 Z"/>
-    <path d="M225,92 C232,55 245,20 268,8 C260,40 250,65 260,85 C248,92 235,95 225,92 Z" style="fill-opacity:0.5;"/>
-  </g>
-</svg>
+  <img class="koi-decor koi-1" src="images/koi-fish.png" alt="" aria-hidden="true">
+  <img class="koi-decor koi-2" src="images/koi-fish.png" alt="" aria-hidden="true">
   <div class="hero">
     <div class="hero-brand">
       <div class="eyebrow">Moda Trendy · Caracas, Venezuela</div>
@@ -447,13 +417,19 @@
   "use strict";
 
   // ============================================================
-  //  CONFIGURACIÓN — edita estos valores cuando los necesites
+  //  CONFIGURACIÓN
   // ============================================================
-  var WHATSAPP_NUMBER = "584242744242";   // Código de país + número, sin "+" ni espacios
+  // Mismo proyecto Supabase que usa la app de inventario. La clave "anon" es
+  // pública por diseño: lo que protege los datos son las políticas RLS de la
+  // base de datos (ver supabase/migracion-2-seguridad-y-catalogo.sql en el
+  // repositorio de la app de inventario). Esta página SOLO lee — nunca escribe.
+  var SUPABASE_URL      = "https://ysbchdurquaxuibetmqi.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_5SxfQgK4xQnYluOxgthc4w_u6AH1X3X";
+
+  var WHATSAPP_NUMBER = "584120000000";   // Código de país + número, sin "+" ni espacios
   var INSTAGRAM_USER   = "marianela_shopp"; // Sin la @
   var STORE_PHOTO       = "images/local-1.jpg"; // Foto del local (déjalo vacío "" para usar el espacio reservado)
   var CAROUSEL_MS       = 3000; // Cada cuánto cambia de foto el carrusel de cada prenda (en milisegundos)
-  var CATEGORIES        = ["Gorras", "Accesorios", "Lentes", "Ropa", "Otros"];
   var GENDERS_FILTER    = ["Todos", "Damas", "Caballeros", "Niños"];
   // ============================================================
 
@@ -508,9 +484,11 @@
 
   function renderCategorySelect(){
     var wrap = document.getElementById('chips');
-    var cats = ["Todo"].concat(CATEGORIES.filter(function(c){
-      return state.products.some(function(p){ return p.category === c; });
-    }));
+    // Las categorías ya no son una lista fija: salen de lo que exista de verdad
+    // en el inventario (campo "type" de cada prenda publicada).
+    var cats = ["Todo"].concat(
+      Array.from(new Set(state.products.map(function(p){ return p.category; }).filter(Boolean))).sort()
+    );
     wrap.innerHTML = '<div class="filter-select-wrap"><select class="filter-select" id="categorySelect">' +
       cats.map(function(c){ return '<option value="' + c + '" ' + (state.activeCategory === c ? 'selected' : '') + '>' + c + '</option>'; }).join('') +
       '</select></div>';
@@ -592,6 +570,34 @@
     });
   }
 
+  /* --- Carga del catálogo desde Supabase ---
+     Lee la vista "public_catalog" (creada por migracion-2-seguridad-y-catalogo.sql
+     en el repositorio de la app de inventario). Esa vista solo expone prendas con
+     is_published = true y nunca columnas internas (cost, units exactas). */
+  async function loadCatalog(){
+    var url = SUPABASE_URL + "/rest/v1/public_catalog?select=id,name,type,audience,price,sizes,images,available,created_at&order=created_at.desc";
+    var res = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + SUPABASE_ANON_KEY
+      }
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    var rows = await res.json();
+    return rows.map(function(row){
+      return {
+        id: row.id,
+        name: row.name,
+        category: row.type,
+        gender: row.audience || "Unisex",
+        price: row.price,
+        size: (row.sizes && row.sizes.length) ? row.sizes.join(", ") : "Única",
+        images: row.images || [],
+        available: !!row.available
+      };
+    });
+  }
+
   async function init(){
     document.getElementById('year').textContent = new Date().getFullYear();
     renderGenderSelect();
@@ -600,20 +606,30 @@
 
     var grid = document.getElementById('grid');
     try{
-      var res = await fetch('./productos.json');
-      if(!res.ok) throw new Error('HTTP ' + res.status);
-      state.products = await res.json();
+      state.products = await loadCatalog();
     }catch(err){
-      console.error('No se pudo cargar productos.json', err);
+      console.error('No se pudo cargar el catálogo desde Supabase', err);
       grid.innerHTML =
         '<div class="empty-state" style="grid-column:1/-1;">' +
-          '<p>No se pudo cargar el catálogo (<code>productos.json</code>). Si estás probando el archivo en tu computadora, ábrelo con un servidor local (por ejemplo <code>python3 -m http.server</code>) en vez de hacer doble clic — al publicarlo en GitHub Pages esto funciona directo.</p>' +
+          '<p>No se pudo cargar el catálogo ahora mismo. Si acabas de configurar la tienda, revisa que ' +
+          '<code>supabase/migracion-2-seguridad-y-catalogo.sql</code> ya se haya ejecutado en el proyecto ' +
+          'de Supabase — esa migración es la que crea la vista <code>public_catalog</code> que esta página necesita.</p>' +
         '</div>';
       renderCategorySelect();
       return;
     }
     renderCategorySelect();
     renderGrid();
+
+    // Si alguien cambia el inventario mientras la página está abierta (sube una
+    // prenda nueva, marca otra como agotada), el catálogo se refresca solo.
+    setInterval(async function(){
+      try{
+        state.products = await loadCatalog();
+        renderCategorySelect();
+        renderGrid();
+      }catch(err){ /* fallo silencioso: se reintenta en el próximo ciclo */ }
+    }, 60000);
   }
 
   init();
