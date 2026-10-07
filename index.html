@@ -201,7 +201,7 @@
     transition:transform .25s ease, border-color .25s ease;
   }
   .card:hover{ transform:translateY(-4px); border-color:var(--gold); }
-  .card .img-wrap{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--panel-2); }
+  .card .img-wrap{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--panel-2); cursor:pointer; }
   .card .img-wrap img{
     width:100%; height:100%; object-fit:cover; display:block;
     filter:grayscale(.25) sepia(.12) contrast(1.05) brightness(.92);
@@ -301,6 +301,62 @@
   }
   .wa-float:hover{ background:var(--moss-bright); transform:scale(1.06); }
   .wa-float svg{ width:26px; height:26px; fill:var(--ivory); }
+
+  /* ---------- product modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(5,5,4,0.82);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; overflow-y:auto;
+  }
+  .modal-overlay[hidden]{ display:none; }
+  .modal-panel{
+    position:relative;
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    max-width:920px; width:100%; max-height:calc(100vh - 48px);
+    display:flex; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .modal-close{
+    position:absolute; top:12px; right:12px; z-index:5;
+    width:32px; height:32px; border-radius:999px; border:1px solid var(--line);
+    background:rgba(10,10,9,0.65); color:var(--ivory); font-size:20px; line-height:1;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:background .2s, border-color .2s;
+  }
+  .modal-close:hover{ background:rgba(10,10,9,0.9); border-color:var(--gold); }
+  .modal-gallery{
+    position:relative; flex:0 0 56%; background:var(--panel-2); aspect-ratio:4/5;
+  }
+  .modal-gallery img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:grayscale(.25) sepia(.12) contrast(1.05) brightness(.92);
+  }
+  .modal-placeholder{
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .modal-info{
+    flex:1; padding:34px 30px; display:flex; flex-direction:column; gap:14px; overflow-y:auto;
+  }
+  .modal-info .cat-pill{ position:static; align-self:flex-start; }
+  .modal-info h3{
+    font-family:'Cormorant Garamond', serif; font-weight:600;
+    font-size:30px; margin:0; color:var(--ivory); line-height:1.2;
+  }
+  .modal-info .price{ font-family:'Cormorant Garamond', serif; font-size:26px; color:var(--gold-bright); font-weight:600; }
+  .modal-info .detail-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .modal-info .detail-row .size{ font-size:12px; }
+  .modal-status{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .modal-status.ok{ color:var(--moss-bright); }
+  .modal-info .cta{ margin-top:auto; padding-top:6px; }
+  .modal-info .cta a, .modal-info .cta button{ width:100%; justify-content:center; }
+  @media (max-width: 760px){
+    .modal-overlay{ padding:0; align-items:flex-end; }
+    .modal-panel{ flex-direction:column; max-height:92vh; border-radius:14px 14px 0 0; width:100%; max-width:100%; }
+    .modal-gallery{ flex:none; aspect-ratio:4/5; max-height:46vh; }
+    .modal-info{ padding:22px 20px 28px; }
+  }
 
   @media (max-width: 640px){
     .topbar nav{ display:none; }
@@ -402,6 +458,14 @@
 <a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
   <svg viewBox="0 0 32 32"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.4.7 4.63 1.9 6.5L4 29l7.66-1.85a11.94 11.94 0 0 0 4.36.82c6.62 0 12.02-5.4 12.02-12.02C28.04 8.4 22.64 3 16.02 3zm0 21.86c-1.9 0-3.7-.55-5.24-1.5l-.38-.23-4.55 1.1 1.13-4.44-.25-.38a9.86 9.86 0 0 1-1.55-5.4c0-5.47 4.45-9.92 9.86-9.92 5.4 0 9.86 4.45 9.86 9.92 0 5.47-4.45 9.85-9.88 9.85zm5.4-7.4c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.16-.17.2-.34.22-.63.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.5.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.2-.24-.57-.48-.5-.66-.5h-.56c-.2 0-.52.07-.79.37-.27.3-1.03 1-1.03 2.46 0 1.46 1.06 2.86 1.2 3.06.15.2 2.1 3.2 5.08 4.5.7.3 1.26.5 1.68.63.7.22 1.35.19 1.85.11.57-.08 1.75-.71 2-1.4.24-.68.24-1.27.17-1.4-.07-.12-.27-.2-.57-.35z"/></svg>
 </a>
+
+<div class="modal-overlay" id="productModal" hidden>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button type="button" class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+    <div class="modal-gallery" id="modalGallery"></div>
+    <div class="modal-info" id="modalInfo"></div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -537,8 +601,8 @@
           '</div>' +
         '</div>';
 
+      var idx = 0;
       if(images.length > 1){
-        var idx = 0;
         var imgEls = card.querySelectorAll('.prod-img');
         var dotEls = card.querySelectorAll('.dot');
         var show = function(i){
@@ -557,7 +621,106 @@
         card.querySelector('.img-nav.next').addEventListener('click', function(e){ e.preventDefault(); show(idx + 1); resetTimer(); });
       }
 
+      // Clic en la foto (fuera de las flechas de navegación) abre el detalle en grande.
+      card.querySelector('.img-wrap').addEventListener('click', function(e){
+        if(e.target.closest('.img-nav')) return;
+        openModal(p, idx);
+      });
+
       grid.appendChild(card);
+    });
+  }
+
+  /* --- Popup de detalle: fotos grandes a la izquierda (arriba en móvil),
+     info de la prenda a la derecha (abajo en móvil). Reutiliza los mismos
+     datos que ya se muestran en la tarjeta del catálogo. --- */
+  var modalState = { product: null, idx: 0, timer: null };
+
+  function openModal(product, startIdx){
+    modalState.product = product;
+    modalState.idx = startIdx || 0;
+    renderModalGallery();
+    renderModalInfo();
+    var overlay = document.getElementById('productModal');
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalClose').focus();
+  }
+
+  function closeModal(){
+    if(modalState.timer) clearInterval(modalState.timer);
+    modalState.timer = null;
+    modalState.product = null;
+    document.getElementById('productModal').hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  function renderModalGallery(){
+    var p = modalState.product;
+    var wrap = document.getElementById('modalGallery');
+    var images = (p.images && p.images.length) ? p.images : [];
+
+    if(!images.length){
+      wrap.innerHTML = '<div class="modal-placeholder">Sin foto</div>';
+      return;
+    }
+
+    var imgsHtml = images.map(function(src, i){
+      return '<img src="' + src + '" alt="' + p.name + '" class="modal-prod-img" style="display:' + (i === modalState.idx ? 'block' : 'none') + '">';
+    }).join('');
+    var navHtml = images.length > 1
+      ? '<button type="button" class="img-nav prev" aria-label="Foto anterior">&lsaquo;</button>' +
+        '<button type="button" class="img-nav next" aria-label="Foto siguiente">&rsaquo;</button>' +
+        '<div class="img-dots">' + images.map(function(_, i){ return '<span class="dot' + (i === modalState.idx ? ' active' : '') + '"></span>'; }).join('') + '</div>'
+      : '';
+    wrap.innerHTML = imgsHtml + navHtml;
+
+    if(images.length > 1){
+      var imgEls = wrap.querySelectorAll('.modal-prod-img');
+      var dotEls = wrap.querySelectorAll('.dot');
+      var show = function(i){
+        modalState.idx = (i + images.length) % images.length;
+        imgEls.forEach(function(im, j){ im.style.display = j === modalState.idx ? 'block' : 'none'; });
+        dotEls.forEach(function(d, j){ d.classList.toggle('active', j === modalState.idx); });
+      };
+      modalState.timer = setInterval(function(){ show(modalState.idx + 1); }, CAROUSEL_MS);
+      function resetTimer(){
+        clearInterval(modalState.timer);
+        modalState.timer = setInterval(function(){ show(modalState.idx + 1); }, CAROUSEL_MS);
+      }
+      wrap.querySelector('.img-nav.prev').addEventListener('click', function(e){ e.preventDefault(); show(modalState.idx - 1); resetTimer(); });
+      wrap.querySelector('.img-nav.next').addEventListener('click', function(e){ e.preventDefault(); show(modalState.idx + 1); resetTimer(); });
+    }
+  }
+
+  function renderModalInfo(){
+    var p = modalState.product;
+    var info = document.getElementById('modalInfo');
+    var priceLabel = "€" + p.price;
+    var msg = "Hola! Me interesa: " + p.name + " (" + priceLabel + ") — Talla " + p.size + ". ¿Está disponible?";
+    info.innerHTML =
+      '<span class="cat-pill">' + p.category + '</span>' +
+      '<h3 id="modalTitle">' + p.name + '</h3>' +
+      '<div class="price">' + priceLabel + '</div>' +
+      '<div class="detail-row">' +
+        '<span class="size">Talla ' + p.size + '</span>' +
+        '<span class="size">' + p.gender + '</span>' +
+      '</div>' +
+      '<div class="modal-status' + (p.available ? ' ok' : '') + '">' + (p.available ? 'Disponible' : 'Agotado') + '</div>' +
+      '<div class="cta">' +
+        (p.available
+          ? '<a class="btn btn-moss" target="_blank" rel="noopener" href="' + waLink(WHATSAPP_NUMBER, msg) + '">Consultar por WhatsApp</a>'
+          : '<button class="btn btn-ghost" disabled>Agotado</button>') +
+      '</div>';
+  }
+
+  function initModal(){
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('productModal').addEventListener('click', function(e){
+      if(e.target.id === 'productModal') closeModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && !document.getElementById('productModal').hidden) closeModal();
     });
   }
 
@@ -594,6 +757,7 @@
     renderGenderSelect();
     renderContactLinks();
     renderLocationPhoto();
+    initModal();
 
     var grid = document.getElementById('grid');
     try{
